@@ -4,44 +4,82 @@ This assignment focuses on building a real-time chat application using Socket.io
 
 ## Assignment Overview
 
-You will build a chat application with the following features:
-1. Real-time messaging using Socket.io
-2. User authentication and presence
-3. Multiple chat rooms or private messaging
-4. Real-time notifications
-5. Advanced features like typing indicators and read receipts
+This project implements a comprehensive real-time chat application using Socket.io with the following features:
+
+### Core Features
+1. ✅ Real-time messaging using Socket.io
+2. ✅ User authentication and presence (username-based)
+3. ✅ Multiple chat rooms (general, random, tech)
+4. ✅ Private messaging between users
+5. ✅ Online/offline user status
+
+### Advanced Features
+6. ✅ Real-time notifications (join/leave, unread counts, sound, browser notifications)
+7. ✅ Typing indicators
+8. ✅ Read receipts
+9. ✅ Message reactions (👍 ❤️ 😂 😮 😢 😡)
+10. ✅ Message search functionality
+11. ✅ Message persistence in localStorage
+12. ✅ Responsive design for desktop and mobile
+13. ✅ Automatic reconnection handling
 
 ## Project Structure
 
 ```
-socketio-chat/
-├── client/                 # React front-end
-│   ├── public/             # Static files
-│   ├── src/                # React source code
-│   │   ├── components/     # UI components
-│   │   ├── context/        # React context providers
-│   │   ├── hooks/          # Custom React hooks
-│   │   ├── pages/          # Page components
-│   │   ├── socket/         # Socket.io client setup
-│   │   └── App.jsx         # Main application component
-│   └── package.json        # Client dependencies
-├── server/                 # Node.js back-end
-│   ├── config/             # Configuration files
-│   ├── controllers/        # Socket event handlers
-│   ├── models/             # Data models
-│   ├── socket/             # Socket.io server setup
-│   ├── utils/              # Utility functions
-│   ├── server.js           # Main server file
-│   └── package.json        # Server dependencies
+real-time-communication-with-socket-io-Stepho-hub/
+├── server.js               # Main server file (Express + Socket.io)
+├── src/                    # React client source code
+│   ├── components/         # UI components
+│   │   ├── ChatRoom.jsx    # Main chat interface
+│   │   ├── MessageList.jsx # Message display component
+│   │   ├── MessageInput.jsx# Message input component
+│   │   ├── UserList.jsx    # Online users list
+│   │   └── UsernameSetter.jsx # Username input component
+│   ├── contexts/           # React context providers
+│   │   ├── ChatContext.jsx # Chat state management
+│   │   └── ThemeContext.jsx# Theme management
+│   ├── hooks/              # Custom React hooks
+│   └── App.jsx             # Main application component
+├── public/                 # Static assets
+├── server/                 # Alternative server implementation
 └── README.md               # Project documentation
 ```
 
 ## Getting Started
 
-1. Accept the GitHub Classroom assignment invitation
-2. Clone your personal repository that was created by GitHub Classroom
-3. Follow the setup instructions in the `Week5-Assignment.md` file
-4. Complete the tasks outlined in the assignment
+### Prerequisites
+- Node.js (v18 or higher)
+- npm or yarn
+
+### Installation & Setup
+
+1. Clone the repository:
+   ```bash
+   git clone <your-repo-url>
+   cd real-time-communication-with-socket-io-Stepho-hub
+   ```
+
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+3. Start the development servers:
+   ```bash
+   # Terminal 1: Start the server
+   npm run server
+
+   # Terminal 2: Start the client
+   npm run dev
+   ```
+
+4. Open your browser and navigate to `http://localhost:5173`
+
+### Usage
+- Enter a username to join the chat
+- Switch between chat rooms using the sidebar
+- Send messages, react with emojis, and search through message history
+- Enable browser notifications for new messages
 
 ## Files Included
 
