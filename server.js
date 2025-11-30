@@ -183,6 +183,23 @@ io.on('connection', (socket) => {
     }
   });
 
+  // Handle message deletion
+  socket.on('deleteMessage', (data) => {
+    const { messageId, room } = data;
+    const targetMessages = messages[room];
+    if (targetMessages) {
+      const messageIndex = targetMessages.findIndex(m => m.id === messageId);
+      if (messageIndex !== -1) {
+        const message = targetMessages[messageIndex];
+        // Only allow deletion by message author
+        if (message.user === socket.user.username) {
+          targetMessages.splice(messageIndex, 1);
+          io.to(room).emit('messageDeleted', { messageId });
+        }
+      }
+    }
+  });
+
   // Handle disconnect
   socket.on('disconnect', () => {
     if (socket.user) {

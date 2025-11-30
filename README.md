@@ -20,8 +20,11 @@ This project implements a comprehensive real-time chat application using Socket.
 9. ✅ Message reactions (👍 ❤️ 😂 😮 😢 😡)
 10. ✅ Message search functionality
 11. ✅ Message persistence in localStorage
-12. ✅ Responsive design for desktop and mobile
-13. ✅ Automatic reconnection handling
+12. ✅ Reply to messages (WhatsApp-style)
+13. ✅ Delete own messages
+14. ✅ Advanced filtering (user, date, reactions)
+15. ✅ Responsive design for desktop and mobile
+16. ✅ Automatic reconnection handling
 
 ## Project Structure
 
@@ -79,6 +82,10 @@ real-time-communication-with-socket-io-Stepho-hub/
 - Enter a username to join the chat
 - Switch between chat rooms using the sidebar
 - Send messages, react with emojis, and search through message history
+- **Reply to messages**: Click any message to see reply/delete options
+- **Delete messages**: Click your own messages and select "Delete"
+- **Advanced filtering**: Use the "Filters" button for user/date/reaction filtering
+- **Online users**: View all online users in the sidebar (shows properly for single/multiple users)
 - Enable browser notifications for new messages
 
 ## Files Included

@@ -15,6 +15,7 @@ export const ChatProvider = ({ children }) => {
   const [typingUsers, setTypingUsers] = useState(new Set());
   const [notifications, setNotifications] = useState([]);
   const [unreadCounts, setUnreadCounts] = useState({});
+  const [replyingTo, setReplyingTo] = useState(null);
 
   // Track if socket event handlers have been set up
   const handlersSetUp = useRef(false);
@@ -136,6 +137,12 @@ export const ChatProvider = ({ children }) => {
     newSocket.on('reactionUpdate', handleReactionUpdate);
     newSocket.on('userJoinedRoom', handleUserJoinedRoom);
     newSocket.on('userLeftRoom', handleUserLeftRoom);
+    newSocket.on('messageDeleted', ({ messageId }) => {
+      setMessages(prev => ({
+        ...prev,
+        [currentRoom]: prev[currentRoom]?.filter(msg => msg.id !== messageId) || []
+      }));
+    });
 
     handlersSetUp.current = true;
     setSocket(newSocket);
@@ -172,12 +179,18 @@ export const ChatProvider = ({ children }) => {
         user: user.username,
         message,
         timestamp: new Date(),
-        readBy: [user.username]
+        readBy: [user.username],
+        replyTo: replyingTo ? {
+          id: replyingTo.id,
+          user: replyingTo.user,
+          message: replyingTo.message
+        } : null
       };
       setMessages(prev => ({ ...prev, [currentRoom]: [...(prev[currentRoom] || []), msg] }));
-      socket.emit('sendMessage', { room: currentRoom, message, isPrivate, recipient });
+      socket.emit('sendMessage', { room: currentRoom, message, isPrivate, recipient, replyTo: replyingTo });
+      setReplyingTo(null); // Clear reply state after sending
     }
-  }, [socketConnected, user?.username, currentRoom, socket, generateUniqueId]);
+  }, [socketConnected, user?.username, currentRoom, socket, generateUniqueId, replyingTo]);
 
   const startTyping = useCallback((isPrivate = false, recipient = null) => {
     if (socket) {
@@ -268,6 +281,24 @@ export const ChatProvider = ({ children }) => {
     }
   };
 
+  const startReply = useCallback((message) => {
+    setReplyingTo(message);
+  }, []);
+
+  const cancelReply = useCallback(() => {
+    setReplyingTo(null);
+  }, []);
+
+  const deleteMessage = useCallback((messageId) => {
+    if (user?.username) {
+      setMessages(prev => ({
+        ...prev,
+        [currentRoom]: prev[currentRoom]?.filter(msg => msg.id !== messageId) || []
+      }));
+      socket.emit('deleteMessage', { messageId, room: currentRoom });
+    }
+  }, [user?.username, currentRoom, socket]);
+
   const clearMessages = useCallback(() => {
     setMessages({});
     if (user?.username) {
@@ -347,12 +378,16 @@ export const ChatProvider = ({ children }) => {
       messages,
       typingUsers,
       notifications,
+      replyingTo,
       joinRoom,
       sendMessage,
       startTyping,
       stopTyping,
       markAsRead,
       addReaction,
+      startReply,
+      cancelReply,
+      deleteMessage,
       setUsername,
       login,
       register,
